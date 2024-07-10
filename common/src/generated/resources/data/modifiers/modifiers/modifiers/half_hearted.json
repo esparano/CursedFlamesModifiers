@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "armor"
+    ],
+    "supportedItems": "#minecraft:enchantable/armor",
+    "weight": 30
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 1.0,
+        "attribute": "minecraft:generic.max_health",
+        "id": "modifiers:half_hearted",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.half_hearted"
+  }
+}
