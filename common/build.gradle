@@ -1,15 +1,22 @@
+//buildscript {
+//    apply from: rootProject.file('buildSrc/src/main/groovy/multiloader-common.gradle')
+//}
+
 plugins {
 //    id 'multiloader-common'
     id 'net.neoforged.moddev'
+    id 'java-library'
+    id 'maven-publish'
+    id 'idea'
 }
 
 neoForge {
     neoFormVersion = neo_form_version
     // Automatically enable AccessTransformers if the file exists
-    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
-    }
+//    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+//    if (at.exists()) {
+//        accessTransformers.add(at.absolutePath)
+//    }
     parchment {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
@@ -17,7 +24,7 @@ neoForge {
 }
 
 dependencies {
-//    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.5'
+    compileOnly group: 'org.spongepowered', name: 'mixin', version: '0.8.7'
     // fabric and neoforge both bundle mixinextras, so it is safe to use it in common
     compileOnly group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
     annotationProcessor group: 'io.github.llamalad7', name: 'mixinextras-common', version: '0.3.5'
@@ -34,9 +41,141 @@ configurations {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+
+    // Exclude common development only resources from finalized outputs
+    exclude("**/*.bbmodel") // BlockBench project files
+    exclude("src/generated/**/.cache") // datagen cache files
+}
+
 
 artifacts {
     commonJava sourceSets.main.java.sourceDirectories.singleFile
     commonResources sourceSets.main.resources.sourceDirectories.files
+}
+
+processResources {
+    logger.log(LogLevel.ERROR, 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB')
+    def expandProps = [
+            'version'                      : version,
+            'group'                        : project.group, //Else we target the task's group.
+            'minecraft_version'            : minecraft_version,
+            'minecraft_version_range'      : minecraft_version_range,
+            'fabric_version'               : fabric_version,
+            'fabric_loader_version'        : fabric_loader_version,
+            'mod_name'                     : mod_name,
+            'mod_author'                   : mod_author,
+            'mod_id'                       : mod_id,
+            'license'                      : license,
+            'description'                  : project.description,
+            'neoforge_version'             : neoforge_version,
+            'neoforge_loader_version_range': neoforge_loader_version_range,
+            'credits'                      : credits,
+            'java_version'                 : java_version
+    ]
+
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
+        expand expandProps
+    }
+    inputs.properties(expandProps)
+    outputs.upToDateWhen {
+        false
+    }
+}
+
+
+
+
+
+
+
+
+
+//
+//
+///////////////
+//
+//version = mod_version
+////group = mod_group_id
+//
+
+//
+//repositories {
+//    flatDir { dirs 'libs' }
+//    mavenCentral()
+//}
+//
+//base {
+//    archivesName = "${mod_archives_name}-common-${minecraft_version}-${mod_version}"
+//}
+//
+//java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+//
+//neoForge {
+//    // Specify the version of NeoForge to use.
+//    version = project.neo_version
+//
+//    parchment {
+//        mappingsVersion = project.parchment_mappings_version
+//        minecraftVersion = project.parchment_minecraft_version
+//    }
+//
+//    // This line is optional. Access Transformers are automatically detected
+//    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+//
+//    mods {
+//        // define mod <-> source bindings
+//        // these are used to tell the game which sources are for which mod
+//        // multi mod projects should define one per mod
+//        "${mod_id}" {
+//            sourceSet(sourceSets.main)
+//        }
+//    }
+//}
+//
+//// Sets up a dependency configuration called 'localRuntime'.
+//// This configuration should be used instead of 'runtimeOnly' to declare
+//// a dependency that will be present for runtime testing but that is
+//// "optional", meaning it will not be pulled by dependents of this mod.
+//configurations {
+//    runtimeClasspath.extendsFrom localRuntime
+//}
+//
+//// This block of code expands all declared replace properties in the specified resource targets.
+//// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+//var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+//    var replaceProperties = [
+//            minecraft_version      : minecraft_version,
+//            minecraft_version_range: minecraft_version_range,
+//            neo_version            : neo_version,
+//            loader_version_range   : loader_version_range,
+//            mod_id                 : mod_id,
+//            mod_name               : mod_name,
+//            mod_license            : mod_license,
+//            mod_version            : mod_version,
+//    ]
+//    inputs.properties replaceProperties
+//    expand replaceProperties
+//    from "src/main/templates"
+//    into "build/generated/sources/modMetadata"
+//}
+//// Include the output of "generateModMetadata" as an input directory for the build
+//// this works with both building through Gradle and the IDE.
+//sourceSets.main.resources.srcDir generateModMetadata
+//// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+//neoForge.ideSyncTask generateModMetadata
+//
+//
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

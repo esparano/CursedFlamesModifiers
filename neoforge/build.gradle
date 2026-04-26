@@ -6,17 +6,17 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.141'
+    id 'net.neoforged.moddev'
     id 'idea'
 }
 
 neoForge {
     version = neoforge_version
     // Automatically enable neoforge AccessTransformers if the file exists
-    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
-    if (at.exists()) {
-        accessTransformers.add(at.absolutePath)
-    }
+//    def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
+//    if (at.exists()) {
+//        accessTransformers.add(at.absolutePath)
+//    }
     parchment {
         minecraftVersion = parchment_minecraft
         mappingsVersion = parchment_version
@@ -47,7 +47,40 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+dependencies {
+    implementation project(':common')
+//    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+//    compileOnly project(':common')
+}
 
+processResources {
+    logger.log(LogLevel.ERROR, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+    def expandProps = [
+            'version'                      : version,
+            'group'                        : project.group, //Else we target the task's group.
+            'minecraft_version'            : minecraft_version,
+            'minecraft_version_range'      : minecraft_version_range,
+            'fabric_version'               : fabric_version,
+            'fabric_loader_version'        : fabric_loader_version,
+            'mod_name'                     : mod_name,
+            'mod_author'                   : mod_author,
+            'mod_id'                       : mod_id,
+            'license'                      : license,
+            'description'                  : project.description,
+            'neoforge_version'             : neoforge_version,
+            'neoforge_loader_version_range': neoforge_loader_version_range,
+            'credits'                      : credits,
+            'java_version'                 : java_version
+    ]
+
+    filesMatching(['pack.mcmeta', 'fabric.mod.json', 'META-INF/mods.toml', 'META-INF/neoforge.mods.toml', '*.mixins.json']) {
+        expand expandProps
+    }
+    inputs.properties(expandProps)
+    outputs.upToDateWhen {
+        false
+    }
+}
 
 ////////////////
 //
@@ -85,19 +118,19 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 //    }
 //}
 //
-//task copyMods {
-//    ['client', 'client2', 'server'].forEach( destination -> {
-//        delete "runs/${destination}/libs/"
-//        copy {
-//            from 'libs'
-//            into "runs/${destination}/libs"
-//        }
-//    } )
-//}
-//
-//tasks.withType(JavaCompile) {
-//    dependsOn copyMods
-//}
+task copyMods {
+    ['client', 'client2', 'server'].forEach( destination -> {
+        delete "runs/${destination}/libs/"
+        copy {
+            from 'libs'
+            into "runs/${destination}/libs"
+        }
+    } )
+}
+
+tasks.withType(JavaCompile) {
+    dependsOn copyMods
+}
 //
 //java {
 //    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
@@ -288,9 +321,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 //neoForge.ideSyncTask generateModMetadata
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
-//idea {
-//    module {
-//        downloadSources = true
-//        downloadJavadoc = true
-//    }
-//}
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
+}
