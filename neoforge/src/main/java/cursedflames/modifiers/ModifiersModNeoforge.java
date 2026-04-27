@@ -80,9 +80,9 @@ public class ModifiersModNeoforge {
 
           params.holders().lookup(ModifiersMod.MODIFIER_REGISTRY_KEY).ifPresent(modifiers -> {
             modifiers.listElements()
-              .peek(a -> System.out.println("Modifier: " + a))
+              // Debug the eligible items for each modifier
+//              .peek(a -> System.out.println("Modifier: " + a))
               .map(modifierReference -> ItemModifierBook.createForModifier(modifierReference.getDelegate()))
-              .peek(a -> System.out.println("modifierReference: " + a))
               .forEach(output::accept);
           });
         })

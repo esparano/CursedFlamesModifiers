@@ -12,12 +12,12 @@
       {
         "amount": 2.0,
         "attribute": "minecraft:generic.armor",
-        "id": "modifiers:itemsed",
+        "id": "modifiers:armored",
         "operation": "add_value"
       }
     ]
   },
   "name": {
-    "translate": "modifier.modifiers.itemsed"
+    "translate": "modifier.modifiers.armored"
   }
 }

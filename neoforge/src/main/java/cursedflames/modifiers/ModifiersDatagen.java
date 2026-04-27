@@ -17,8 +17,10 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ModifiersDatagen {
   // Some of these aren't on the NeoForge Tags class? idk
@@ -26,12 +28,12 @@ public class ModifiersDatagen {
 //  private static final TagKey<Item> RANGED_WEAPONS = tag("ranged_weapons");
 
 
-  // c:tools/melee_weapons
+  // Example tag:       c:tools/melee_weapons
   private static final TagKey<Item> MELEE_WEAPONS = tag("tools/melee_weapons");
   private static final TagKey<Item> RANGED_WEAPONS = tag("tools/ranged_weapons");
+  private static final TagKey<Item> BOWS = tag("tools/bows");
   // Includes ALL tools, melee weapons, and ranged weapons. (c:tools)
   private static final TagKey<Item> TOOLS = tag("tools");
-
 
   private static TagKey<Item> tag(String name) {
     return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -43,16 +45,25 @@ public class ModifiersDatagen {
     var armorItems = items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE);
     registerArmorModifiers(bootstrap, armorItems);
 
-//    var meleeItems = items.getOrThrow(MELEE_WEAPONS);
-    // We could consider adding enchantments to ranged weapons, but not going to do it right now.
-//    var rangedItems = items.getOrThrow(RANGED_WEAPONS);
+    //    var meleeItems = items.getOrThrow(MELEE_WEAPONS);
 
-    // TODO: Remove ranged weapons
+    // We could consider adding enchantments to ranged weapons, but not going to do it right now for balancing reasons.
+    // TODO: This is not actually working. Ranged items are still in the JSON "supported tags" for each individual
+    // modifier. Instead, we should add each Melee weapon manually. TODO: Check whether bows have extra attack damage
+    //  and attack speed (e.g. from "legendary").
     var toolItems = items.getOrThrow(TOOLS);
+//    var nonRangeItemsList = toolItems.stream().filter(item ->
+//                                                        !item.is(ItemTags.BOW_ENCHANTABLE)
+//                                                          && !item.is(ItemTags.CROSSBOW_ENCHANTABLE)
+//                                                          && !item.is(BOWS)
+//                                                          && !item.is(RANGED_WEAPONS)
+//    ).toList();
+//    var nonRangeItemsHolderSet = HolderSet.direct(nonRangeItemsList);
+//    registerToolWeaponModifiers(bootstrap, nonRangeItemsHolderSet);
     registerToolWeaponModifiers(bootstrap, toolItems);
   }
 
-  private static void registerArmorModifiers(BootstrapContext<Modifier> bootstrap, net.minecraft.core.HolderSet.Named<Item> items) {
+  private static void registerArmorModifiers(BootstrapContext<Modifier> bootstrap, net.minecraft.core.HolderSet<Item> items) {
     // Old method:
     //		addCurio(curio("half_hearted").setWeight(300).addModifier(Attributes.MAX_HEALTH, mod(1, ADDITION)).build());
 
@@ -80,9 +91,9 @@ public class ModifiersDatagen {
           Attributes.ARMOR, LevelBasedValue.constant(1.5f), AttributeModifier.Operation.ADD_VALUE)))
         .build());
 
-    register(bootstrap, "itemsed", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
+    register(bootstrap, "armored", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
       DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("itemsed"),
+        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("armored"),
           Attributes.ARMOR, LevelBasedValue.constant(2), AttributeModifier.Operation.ADD_VALUE)))
         .build());
 
@@ -163,10 +174,9 @@ public class ModifiersDatagen {
         .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("violent"),
           Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.04f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
         .build());
-
   }
 
-  private static void registerToolWeaponModifiers(BootstrapContext<Modifier> bootstrap, HolderSet.Named<Item> items) {
+  private static void registerToolWeaponModifiers(BootstrapContext<Modifier> bootstrap, HolderSet<Item> items) {
     register(bootstrap, "legendary", new Modifier.ModifierDefinition(items, 3, 0, List.of(EquipmentSlotGroup.MAINHAND)),
       DataComponentMap.builder()
         .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
