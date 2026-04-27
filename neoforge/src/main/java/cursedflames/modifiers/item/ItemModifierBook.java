@@ -15,26 +15,26 @@ import java.util.List;
 import java.util.Optional;
 
 public class ItemModifierBook extends Item {
-	public ItemModifierBook() {
-		super(new Properties().rarity(Rarity.EPIC));
-	}
+  public ItemModifierBook() {
+    super(new Properties().rarity(Rarity.EPIC));
+  }
 
-	@Override
-	public boolean isFoil(ItemStack stack) {
-		var component = stack.get(ModifiersMod.ITEM_MODIFIER_COMPONENT);
-		return super.isFoil(stack) || component != null && component.modifier().isPresent();
-	}
+  @Override
+  public boolean isFoil(ItemStack stack) {
+    var component = stack.get(ModifiersMod.ITEM_MODIFIER_COMPONENT);
+    return super.isFoil(stack) || component != null && component.modifier().isPresent();
+  }
 
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context,
-								List<Component> tooltip, TooltipFlag flagIn) {
-		// TODO: append modifier component name to tooltip
-			tooltip.add(Component.translatable(this.getDescriptionId()+".tooltip.0"));
-	}
+  @Override
+  public void appendHoverText(ItemStack stack, TooltipContext context,
+                              List<Component> tooltip, TooltipFlag flagIn) {
+    tooltip.add(Component.translatable(this.getDescriptionId() + ".tooltip.0"));
+    tooltip.add(Component.translatable(this.getDescriptionId() + ".tooltip.1"));
+  }
 
-	public static ItemStack createForModifier(@Nullable Holder<Modifier> modifier) {
-		ItemStack itemstack = new ItemStack(ModifiersMod.MODIFIER_BOOK);
-		itemstack.set(ModifiersMod.ITEM_MODIFIER_COMPONENT, new ItemModifier(Optional.ofNullable(modifier), true));
-		return itemstack;
-	}
+  public static ItemStack createForModifier(@Nullable Holder<Modifier> modifier) {
+    ItemStack itemstack = new ItemStack(ModifiersMod.MODIFIER_BOOK);
+    itemstack.set(ModifiersMod.ITEM_MODIFIER_COMPONENT, new ItemModifier(Optional.ofNullable(modifier), true));
+    return itemstack;
+  }
 }
