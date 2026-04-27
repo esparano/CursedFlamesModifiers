@@ -2,6 +2,7 @@ package cursedflames.modifiers;
 
 
 import cursedflames.modifiers.item.ItemModifierBook;
+import cursedflames.modifiers.item.ItemReforgeTemplate;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -61,6 +62,7 @@ public class ModifiersModNeoforge {
 
 	static void onRegisterItems(RegisterEvent.RegisterHelper<Item> registry) {
 		registry.register(ModifiersMod.resourceLocation("modifier_book"), ModifiersMod.MODIFIER_BOOK = new ItemModifierBook());
+		registry.register(ModifiersMod.resourceLocation("reforge_template"), ModifiersMod.REFORGE_TEMPLATE = new ItemReforgeTemplate());
 	}
 
 	static void onRegisterCreativeTabs(RegisterEvent.RegisterHelper<CreativeModeTab> registry) {
@@ -77,6 +79,21 @@ public class ModifiersModNeoforge {
 						})
 						.build()
 		);
+
+		registry.register(ModifiersMod.resourceLocation("reforge_template"),
+			CreativeModeTab.builder()
+				.icon(() -> new ItemStack(ModifiersMod.REFORGE_TEMPLATE))
+				.displayItems((CreativeModeTab.ItemDisplayParameters params, CreativeModeTab.Output output) -> {
+					output.accept(ItemReforgeTemplate.create());
+					params.holders().lookup(ModifiersMod.MODIFIER_REGISTRY_KEY).ifPresent(modifiers -> {
+						modifiers.listElements()
+							.map(modifierReference -> ItemModifierBook.createForModifier(modifierReference.getDelegate()))
+							.peek(System.out::println)
+							.forEach(output::accept);
+					});
+				})
+				.build()
+		);
 	}
 
 	static void onRegister(RegisterEvent event) {
@@ -86,8 +103,8 @@ public class ModifiersModNeoforge {
 	}
 
     public ModifiersModNeoforge(IEventBus eventBus) {
-        eventBus.addListener(ModifiersModNeoforge::registerDatapackRegistries);
-		eventBus.addListener(ModifiersModNeoforge::onGatherData);
-		eventBus.addListener(ModifiersModNeoforge::onRegister);
+			eventBus.addListener(ModifiersModNeoforge::registerDatapackRegistries);
+			eventBus.addListener(ModifiersModNeoforge::onGatherData);
+			eventBus.addListener(ModifiersModNeoforge::onRegister);
     }
 }

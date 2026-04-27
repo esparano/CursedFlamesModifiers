@@ -14,4 +14,4 @@
 *.cfg text eol=lf
 *.jks binary
 
-common/src/generated/** linguist-generated=true
+neoforge/src/generated/** linguist-generated=true

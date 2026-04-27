@@ -28,8 +28,8 @@ public class ItemModifierBook extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context,
 								List<Component> tooltip, TooltipFlag flagIn) {
+		// TODO: append modifier component name to tooltip
 			tooltip.add(Component.translatable(this.getDescriptionId()+".tooltip.0"));
-			tooltip.add(Component.translatable(this.getDescriptionId()+".tooltip.1"));
 	}
 
 	public static ItemStack createForModifier(@Nullable Holder<Modifier> modifier) {
