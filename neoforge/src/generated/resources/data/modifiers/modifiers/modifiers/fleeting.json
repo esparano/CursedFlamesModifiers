@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "armor"
+    ],
+    "supportedItems": "#minecraft:enchantable/armor",
+    "weight": 20
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 0.02,
+        "attribute": "minecraft:generic.movement_speed",
+        "id": "modifiers:fleeting",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.fleeting"
+  }
+}

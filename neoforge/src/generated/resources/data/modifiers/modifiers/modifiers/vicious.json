@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "mainhand"
+    ],
+    "supportedItems": "#c:tools",
+    "weight": 10
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 0.1,
+        "attribute": "minecraft:generic.attack_damage",
+        "id": "modifiers:vicious",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.vicious"
+  }
+}

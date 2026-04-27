@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "armor"
+    ],
+    "supportedItems": "#minecraft:enchantable/armor",
+    "weight": 20
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 1.5,
+        "attribute": "minecraft:generic.armor",
+        "id": "modifiers:guarding",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.guarding"
+  }
+}

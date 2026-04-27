@@ -40,7 +40,7 @@ public class ModifiersDatagen {
   public static void bootstrap(BootstrapContext<Modifier> bootstrap) {
     var items = bootstrap.lookup(Registries.ITEM);
 
-		var armorItems = items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE);
+    var armorItems = items.getOrThrow(ItemTags.ARMOR_ENCHANTABLE);
     registerArmorModifiers(bootstrap, armorItems);
 
 //    var meleeItems = items.getOrThrow(MELEE_WEAPONS);
@@ -167,8 +167,6 @@ public class ModifiersDatagen {
   }
 
   private static void registerToolWeaponModifiers(BootstrapContext<Modifier> bootstrap, HolderSet.Named<Item> items) {
-    // TODO: Do I have to add offhand here?
-    // TODO: Do I have to add each legendary modifier separately?
     register(bootstrap, "legendary", new Modifier.ModifierDefinition(items, 3, 0, List.of(EquipmentSlotGroup.MAINHAND)),
       DataComponentMap.builder()
         .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(

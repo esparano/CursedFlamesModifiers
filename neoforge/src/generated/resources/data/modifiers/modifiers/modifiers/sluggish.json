@@ -1,0 +1,29 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "mainhand"
+    ],
+    "supportedItems": "#c:tools",
+    "weight": 10
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": -0.05,
+        "attribute": "minecraft:generic.attack_speed",
+        "id": "modifiers:sluggish",
+        "operation": "add_multiplied_total"
+      },
+      {
+        "amount": -0.1,
+        "attribute": "minecraft:generic.movement_speed",
+        "id": "modifiers:sluggish",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.sluggish"
+  }
+}

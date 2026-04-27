@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "mainhand"
+    ],
+    "supportedItems": "#c:tools",
+    "weight": 7
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": -0.2,
+        "attribute": "minecraft:generic.attack_damage",
+        "id": "modifiers:broken",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.broken"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "armor"
+    ],
+    "supportedItems": "#minecraft:enchantable/armor",
+    "weight": 20
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 0.01,
+        "attribute": "minecraft:generic.attack_speed",
+        "id": "modifiers:wild",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.wild"
+  }
+}

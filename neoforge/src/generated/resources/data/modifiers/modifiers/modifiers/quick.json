@@ -1,0 +1,23 @@
+{
+  "definition": {
+    "quality": 0,
+    "slots": [
+      "armor"
+    ],
+    "supportedItems": "#minecraft:enchantable/armor",
+    "weight": 10
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": 0.04,
+        "attribute": "minecraft:generic.movement_speed",
+        "id": "modifiers:quick",
+        "operation": "add_multiplied_total"
+      }
+    ]
+  },
+  "name": {
+    "translate": "modifier.modifiers.quick"
+  }
+}
