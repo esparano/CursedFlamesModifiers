@@ -70,77 +70,7 @@ public class Modifiers {
   public static void init() {
     addCurio(curio("half_hearted").setWeight(300).addModifier(Attributes.MAX_HEALTH, mod(1, ADDITION)).build());
     addCurio(curio("hearty").setWeight(100).addModifier(Attributes.MAX_HEALTH, mod(2, ADDITION)).build());
-    addCurio(curio("hard").setWeight(300).addModifier(Attributes.ARMOR, mod(1, ADDITION)).build());
-    addCurio(curio("guarding").setWeight(200).addModifier(Attributes.ARMOR, mod(1.5, ADDITION)).build());
-    addCurio(curio("armored").setWeight(100).addModifier(Attributes.ARMOR, mod(2, ADDITION)).build());
-    addCurio(curio("warding").setWeight(200).addModifier(Attributes.ARMOR_TOUGHNESS, mod(1, ADDITION)).build());
-    addCurio(curio("jagged").setWeight(200).addModifier(Attributes.ATTACK_DAMAGE, mod(0.01, MULTIPLY_TOTAL)).build());
-    addCurio(curio("spiked").setWeight(200).addModifier(Attributes.ATTACK_DAMAGE, mod(0.02, MULTIPLY_TOTAL)).build());
-    addCurio(curio("angry").setWeight(100).addModifier(Attributes.ATTACK_DAMAGE, mod(0.03, MULTIPLY_TOTAL)).build());
-    addCurio(curio("menacing").setWeight(100).addModifier(Attributes.ATTACK_DAMAGE, mod(0.04, MULTIPLY_TOTAL)).build());
-    addCurio(curio("brisk").setWeight(200).addModifier(Attributes.MOVEMENT_SPEED, mod(0.01, MULTIPLY_TOTAL)).build());
-    addCurio(curio("fleeting").setWeight(200).addModifier(Attributes.MOVEMENT_SPEED, mod(0.02, MULTIPLY_TOTAL)).build());
-    addCurio(curio("hasty").setWeight(100).addModifier(Attributes.MOVEMENT_SPEED, mod(0.03, MULTIPLY_TOTAL)).build());
-    addCurio(curio("quick").setWeight(100).addModifier(Attributes.MOVEMENT_SPEED, mod(0.04, MULTIPLY_TOTAL)).build());
-    addCurio(curio("wild").setWeight(200).addModifier(Attributes.ATTACK_SPEED, mod(0.01, MULTIPLY_TOTAL)).build());
-    addCurio(curio("rash").setWeight(200).addModifier(Attributes.ATTACK_SPEED, mod(0.02, MULTIPLY_TOTAL)).build());
-    addCurio(curio("intrepid").setWeight(100).addModifier(Attributes.ATTACK_SPEED, mod(0.03, MULTIPLY_TOTAL)).build());
-    addCurio(curio("violent").setWeight(100).addModifier(Attributes.ATTACK_SPEED, mod(0.04, MULTIPLY_TOTAL)).build());
-
-    addTool(tool("legendary").setWeight(30)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(0.15, MULTIPLY_TOTAL))
-              .addModifier(Attributes.ATTACK_SPEED, mod(0.1, MULTIPLY_TOTAL))
-              .addModifier(Attributes.MOVEMENT_SPEED, mod(0.05, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("deadly").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(0.15, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("vicious").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(0.1, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("sharp").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(0.05, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("broken").setWeight(70)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(-0.2, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("damaged").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(-0.1, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("agile").setWeight(100)
-              .addModifier(Attributes.ATTACK_SPEED, mod(0.05, MULTIPLY_TOTAL))
-              .addModifier(Attributes.MOVEMENT_SPEED, mod(0.1, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("swift").setWeight(100)
-              .addModifier(Attributes.ATTACK_SPEED, mod(0.1, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("sluggish").setWeight(100)
-              .addModifier(Attributes.ATTACK_SPEED, mod(-0.05, MULTIPLY_TOTAL))
-              .addModifier(Attributes.MOVEMENT_SPEED, mod(-0.1, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("slow").setWeight(100)
-              .addModifier(Attributes.ATTACK_SPEED, mod(-0.15, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("light").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(-0.1, MULTIPLY_TOTAL))
-              .addModifier(Attributes.ATTACK_SPEED, mod(0.15, MULTIPLY_TOTAL))
-              .build());
-
-    addTool(tool("heavy").setWeight(100)
-              .addModifier(Attributes.ATTACK_DAMAGE, mod(0.2, MULTIPLY_TOTAL))
-              .addModifier(Attributes.ATTACK_SPEED, mod(-0.15, MULTIPLY_TOTAL))
-              .addModifier(Attributes.MOVEMENT_SPEED, mod(-0.05, MULTIPLY_TOTAL))
-              .build());
+    
   }
 
   static {
