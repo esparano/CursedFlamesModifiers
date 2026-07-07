@@ -22,28 +22,31 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(AnvilMenu.class)
 public abstract class MixinAnvilContainer extends ItemCombinerMenu {
-	public MixinAnvilContainer(MenuType<?> p_i231587_1_, int p_i231587_2_, Inventory p_i231587_3_, ContainerLevelAccess p_i231587_4_) {
-		super(p_i231587_1_, p_i231587_2_, p_i231587_3_, p_i231587_4_);
-	}
+  public MixinAnvilContainer(MenuType<?> p_i231587_1_, int p_i231587_2_, Inventory p_i231587_3_, ContainerLevelAccess p_i231587_4_) {
+    super(p_i231587_1_, p_i231587_2_, p_i231587_3_, p_i231587_4_);
+  }
 
-	@Shadow @Final private DataSlot cost;
+  @Shadow
+  @Final
+  private DataSlot cost;
 
-	@Shadow public int repairItemCountCost;
+  @Shadow
+  public int repairItemCountCost;
 
-	@Inject(method = "createResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantments(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", ordinal = 0),
-		locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
-	private void onUpdateRepairOutput(CallbackInfo ci, ItemStack stack, int i, int j, int k, ItemStack output, ItemStack stack2) {
-		// TODO only allow applying modifiers to items that accept them?
-		if (stack2.getItem() == ModifiersMod.modifier_book && stack2.hasTag()) {
-			Modifier modifier = Modifiers.modifiers.get(new ResourceLocation(stack2.getTag().getString(ModifierHandler.bookTagName)));
-			if (modifier != null) {
-				ModifierHandler.setModifier(output, modifier);
-				this.cost.set(1);
-				this.repairItemCountCost = 1;
-				this.resultSlots.setItem(0, output);
-				this.broadcastChanges();
-				ci.cancel();
-			}
-		}
-	}
+  @Inject(method = "createResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getEnchantments(Lnet/minecraft/world/item/ItemStack;)Ljava/util/Map;", ordinal = 0),
+    locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
+  private void onUpdateRepairOutput(CallbackInfo ci, ItemStack stack, int i, int j, int k, ItemStack output, ItemStack stack2) {
+    // TODO only allow applying modifiers to items that accept them?
+    if (stack2.getItem() == ModifiersMod.modifier_book && stack2.hasTag()) {
+      Modifier modifier = Modifiers.modifiers.get(new ResourceLocation(stack2.getTag().getString(ModifierHandler.bookTagName)));
+      if (modifier != null) {
+        ModifierHandler.setModifier(output, modifier);
+        this.cost.set(1);
+        this.repairItemCountCost = 1;
+        this.resultSlots.setItem(0, output);
+        this.broadcastChanges();
+        ci.cancel();
+      }
+    }
+  }
 }
