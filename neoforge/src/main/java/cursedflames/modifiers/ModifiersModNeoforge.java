@@ -54,9 +54,12 @@ public class ModifiersModNeoforge {
   }
 
   static void onRegisterDataComponents(RegisterEvent.RegisterHelper<DataComponentType<?>> registry) {
-    // java generics are gonna be the death of me
-    DataComponentType.Builder<ItemModifier> builder = DataComponentType.builder();
-    DataComponentType<ItemModifier> componentType = builder.persistent(ItemModifier.CODEC).cacheEncoding().build();
+    DataComponentType<ItemModifier> componentType = DataComponentType.<ItemModifier>builder()
+                                                      .persistent(ItemModifier.CODEC) // This now points to the lazy codec
+                                                      .networkSynchronized(ItemModifier.STREAM_CODEC)
+                                                      .cacheEncoding()
+                                                      .build();
+
     ModifiersMod.ITEM_MODIFIER_COMPONENT = componentType;
     registry.register(ModifiersMod.resourceLocation("modifier"), componentType);
   }
@@ -76,7 +79,6 @@ public class ModifiersModNeoforge {
 
           // TODO: Empty books don't work yet
           output.accept(ItemModifierBook.createForModifier(null));
-
 
           params.holders().lookup(ModifiersMod.MODIFIER_REGISTRY_KEY).ifPresent(modifiers -> {
             modifiers.listElements()

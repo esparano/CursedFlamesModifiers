@@ -9,7 +9,9 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -22,87 +24,105 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class Modifier {
-	public record ModifierDefinition(HolderSet<Item> supportedItems, int weight, int quality, List<EquipmentSlotGroup> slots) {
-		public static final Codec<ModifierDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-				RegistryCodecs.homogeneousList(Registries.ITEM).fieldOf("supportedItems").forGetter(ModifierDefinition::supportedItems),
-				ExtraCodecs.intRange(0, 1024).fieldOf("weight").forGetter(ModifierDefinition::weight), // TODO decide actual bounds
-				ExtraCodecs.intRange(-512, 512).fieldOf("quality").forGetter(ModifierDefinition::quality), // TODO decide actual bounds
-				EquipmentSlotGroup.CODEC.listOf().fieldOf("slots").forGetter(ModifierDefinition::slots)
-		).apply(instance, ModifierDefinition::new));
-	}
 
-	public static final Codec<Holder<Modifier>> CODEC = RegistryFixedCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY);
+  public record ModifierDefinition(HolderSet<Item> supportedItems, int weight, int quality,
+                                   List<EquipmentSlotGroup> slots) {
+    public static final Codec<ModifierDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+      RegistryCodecs.homogeneousList(Registries.ITEM).fieldOf("supportedItems").forGetter(ModifierDefinition::supportedItems),
+      ExtraCodecs.intRange(0, 1024).fieldOf("weight").forGetter(ModifierDefinition::weight), // TODO decide actual bounds
+      ExtraCodecs.intRange(-512, 512).fieldOf("quality").forGetter(ModifierDefinition::quality), // TODO decide actual bounds
+      EquipmentSlotGroup.CODEC.listOf().fieldOf("slots").forGetter(ModifierDefinition::slots)
+    ).apply(instance, ModifierDefinition::new));
+  }
 
-	public static final Codec<Modifier> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ComponentSerialization.CODEC.fieldOf("name").forGetter(Modifier::name),
-			ComponentSerialization.CODEC.optionalFieldOf("description").forGetter(Modifier::description),
-			ModifierDefinition.CODEC.fieldOf("definition").forGetter(Modifier::definition),
-			EnchantmentEffectComponents.CODEC.optionalFieldOf("effects", DataComponentMap.EMPTY).forGetter(Modifier::effects)
-	).apply(instance, Modifier::new));
-	private final Component name;
-	private final Optional<Component> description;
-	private final ModifierDefinition definition;
-	private final DataComponentMap effects;
+  public static final Codec<Modifier> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+    ComponentSerialization.CODEC.fieldOf("name").forGetter(Modifier::name),
+    ComponentSerialization.CODEC.optionalFieldOf("description").forGetter(Modifier::description),
+    ModifierDefinition.CODEC.fieldOf("definition").forGetter(Modifier::definition),
+    EnchantmentEffectComponents.CODEC.optionalFieldOf("effects", DataComponentMap.EMPTY).forGetter(Modifier::effects)
+  ).apply(instance, Modifier::new));
 
-	private final Enchantment internalEnchantment;
+  public static final Codec<Holder<Modifier>> CODEC =
+    Codec.lazyInitialized(
+      () ->
+        RegistryFileCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY, DIRECT_CODEC)
+          // .xmap maps the raw object to a Holder if needed,
+          // but we want to force the system to treat it as a registry-bound object
+          .xmap(
+            holder -> holder,
+            holder -> holder
+          )
+    );
+//  public static final Codec<Holder<Modifier>> CODEC = RegistryFileCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY, Modifier.DIRECT_CODEC);
+//  public static final Codec<Holder<Modifier>> CODEC = RegistryFixedCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY);
 
-	public Modifier(Component name, Optional<Component> description, ModifierDefinition definition, DataComponentMap effects) {
-		this.name = name;
-		this.description = description;
-		this.definition = definition;
-		this.effects = effects;
-		var enchantmentDef = new Enchantment.EnchantmentDefinition(definition.supportedItems, Optional.empty(), 1, 1, Enchantment.constantCost(1), Enchantment.constantCost(1), 1, definition.slots);
-		this.internalEnchantment = new Enchantment(name, enchantmentDef, HolderSet.empty(), effects);
-	}
 
-	public Component name() {
-		return name;
-	}
+  private final Component name;
+  private final Optional<Component> description;
+  private final ModifierDefinition definition;
+  private final DataComponentMap effects;
 
-	public Optional<Component> description() {
-		return description;
-	}
+  private final Enchantment internalEnchantment;
 
-	public ModifierDefinition definition() {
-		return definition;
-	}
+  public Modifier(Component name, Optional<Component> description, ModifierDefinition definition, DataComponentMap effects) {
+    this.name = name;
+    this.description = description;
+    this.definition = definition;
+    this.effects = effects;
+    var enchantmentDef = new Enchantment.EnchantmentDefinition(definition.supportedItems, Optional.empty(), 1, 1, Enchantment.constantCost(1), Enchantment.constantCost(1), 1, definition.slots);
+    this.internalEnchantment = new Enchantment(name, enchantmentDef, HolderSet.empty(), effects);
+  }
 
-	public DataComponentMap effects() {
-		return effects;
-	}
+  public Component name() {
+    return name;
+  }
 
-	/** Used internally for applying Modifier effects; should never be touched otherwise */
-	public Enchantment getInternalEnchantment() {
-		return internalEnchantment;
-	}
+  public Optional<Component> description() {
+    return description;
+  }
 
-	public boolean matchingSlot(EquipmentSlot pSlot) {
-		return this.definition.slots().stream().anyMatch((slotGroup) -> slotGroup.test(pSlot));
-	}
+  public ModifierDefinition definition() {
+    return definition;
+  }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (obj == null || obj.getClass() != this.getClass()) return false;
-		var that = (Modifier) obj;
-		return Objects.equals(this.name, that.name) &&
-				Objects.equals(this.description, that.description) &&
-				Objects.equals(this.definition, that.definition) &&
-				Objects.equals(this.effects, that.effects);
-	}
+  public DataComponentMap effects() {
+    return effects;
+  }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name, description, definition, effects);
-	}
+  /**
+   * Used internally for applying Modifier effects; should never be touched otherwise
+   */
+  public Enchantment getInternalEnchantment() {
+    return internalEnchantment;
+  }
 
-	@Override
-	public String toString() {
-		return "Modifier[" +
-				"name=" + name + ", " +
-				"description=" + description + ", " +
-				"definition=" + definition + ", " +
-				"effects=" + effects + ']';
-	}
+  public boolean matchingSlot(EquipmentSlot pSlot) {
+    return this.definition.slots().stream().anyMatch((slotGroup) -> slotGroup.test(pSlot));
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) return true;
+    if (obj == null || obj.getClass() != this.getClass()) return false;
+    var that = (Modifier) obj;
+    return Objects.equals(this.name, that.name) &&
+             Objects.equals(this.description, that.description) &&
+             Objects.equals(this.definition, that.definition) &&
+             Objects.equals(this.effects, that.effects);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, description, definition, effects);
+  }
+
+  @Override
+  public String toString() {
+    return "Modifier[" +
+             "name=" + name + ", " +
+             "description=" + description + ", " +
+             "definition=" + definition + ", " +
+             "effects=" + effects + ']';
+  }
 
 }

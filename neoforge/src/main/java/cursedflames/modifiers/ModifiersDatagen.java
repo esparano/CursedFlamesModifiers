@@ -304,7 +304,6 @@ public class ModifiersDatagen {
     return ResourceKey.create(ModifiersMod.MODIFIER_REGISTRY_KEY, id(name));
   }
 
-
   private static ResourceLocation id(String name) {
     return ModifiersMod.resourceLocation(name);
   }
