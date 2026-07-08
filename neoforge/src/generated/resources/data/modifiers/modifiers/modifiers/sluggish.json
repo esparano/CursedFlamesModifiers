@@ -8,20 +8,24 @@
     "weight": 10
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": -0.05,
-        "attribute": "minecraft:generic.attack_speed",
-        "id": "modifiers:sluggish",
-        "operation": "add_multiplied_total"
-      },
-      {
-        "amount": -0.1,
-        "attribute": "minecraft:generic.movement_speed",
-        "id": "modifiers:sluggish",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.attack_speed",
+          "amount": -0.05,
+          "id": "modifiers:sluggish",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        },
+        {
+          "type": "minecraft:generic.movement_speed",
+          "amount": -0.1,
+          "id": "modifiers:sluggish",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.sluggish"

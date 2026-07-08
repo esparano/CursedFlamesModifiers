@@ -8,14 +8,17 @@
     "weight": 10
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": 0.1,
-        "attribute": "minecraft:generic.attack_damage",
-        "id": "modifiers:vicious",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.attack_damage",
+          "amount": 0.1,
+          "id": "modifiers:vicious",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.vicious"

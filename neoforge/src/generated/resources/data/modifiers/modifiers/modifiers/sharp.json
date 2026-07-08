@@ -8,14 +8,17 @@
     "weight": 10
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": 0.05,
-        "attribute": "minecraft:generic.attack_damage",
-        "id": "modifiers:sharp",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.attack_damage",
+          "amount": 0.05,
+          "id": "modifiers:sharp",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.sharp"

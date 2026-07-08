@@ -8,14 +8,17 @@
     "weight": 10
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": 0.04,
-        "attribute": "minecraft:generic.attack_speed",
-        "id": "modifiers:violent",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.attack_speed",
+          "amount": 0.04,
+          "id": "modifiers:violent",
+          "operation": "add_multiplied_total",
+          "slot": "armor"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.violent"

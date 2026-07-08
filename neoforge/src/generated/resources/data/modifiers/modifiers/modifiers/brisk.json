@@ -8,14 +8,17 @@
     "weight": 20
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": 0.01,
-        "attribute": "minecraft:generic.movement_speed",
-        "id": "modifiers:brisk",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.movement_speed",
+          "amount": 0.01,
+          "id": "modifiers:brisk",
+          "operation": "add_multiplied_total",
+          "slot": "armor"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.brisk"

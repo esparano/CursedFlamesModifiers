@@ -8,26 +8,31 @@
     "weight": 10
   },
   "effects": {
-    "minecraft:attributes": [
-      {
-        "amount": 0.2,
-        "attribute": "minecraft:generic.attack_damage",
-        "id": "modifiers:heavy",
-        "operation": "add_multiplied_total"
-      },
-      {
-        "amount": -0.15,
-        "attribute": "minecraft:generic.attack_speed",
-        "id": "modifiers:heavy",
-        "operation": "add_multiplied_total"
-      },
-      {
-        "amount": -0.05,
-        "attribute": "minecraft:generic.movement_speed",
-        "id": "modifiers:heavy",
-        "operation": "add_multiplied_total"
-      }
-    ]
+    "minecraft:attribute_modifiers": {
+      "modifiers": [
+        {
+          "type": "minecraft:generic.attack_damage",
+          "amount": 0.2,
+          "id": "modifiers:heavy",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        },
+        {
+          "type": "minecraft:generic.attack_speed",
+          "amount": -0.15,
+          "id": "modifiers:heavy",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        },
+        {
+          "type": "minecraft:generic.movement_speed",
+          "amount": -0.05,
+          "id": "modifiers:heavy",
+          "operation": "add_multiplied_total",
+          "slot": "mainhand"
+        }
+      ]
+    }
   },
   "name": {
     "translate": "modifier.modifiers.heavy"

@@ -2,6 +2,7 @@ package cursedflames.modifiers;
 
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
@@ -13,14 +14,10 @@ import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
-import net.minecraft.world.item.enchantment.LevelBasedValue;
-import net.minecraft.world.item.enchantment.effects.EnchantmentAttributeEffect;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class ModifiersDatagen {
   // Some of these aren't on the NeoForge Tags class? idk
@@ -63,229 +60,135 @@ public class ModifiersDatagen {
     registerToolWeaponModifiers(bootstrap, toolItems);
   }
 
-  private static void registerArmorModifiers(BootstrapContext<Modifier> bootstrap, net.minecraft.core.HolderSet<Item> items) {
-    // Old method:
-    //		addCurio(curio("half_hearted").setWeight(300).addModifier(Attributes.MAX_HEALTH, mod(1, ADDITION)).build());
-
+  private static void registerArmorModifiers(BootstrapContext<Modifier> bootstrap, HolderSet<Item> items) {
     register(bootstrap, "half_hearted", new Modifier.ModifierDefinition(items, 30, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("half_hearted"),
-          Attributes.MAX_HEALTH, LevelBasedValue.constant(1), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MAX_HEALTH, new AttributeModifier(id("half_hearted"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "hearty", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("hearty"),
-          Attributes.MAX_HEALTH, LevelBasedValue.constant(2), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MAX_HEALTH, new AttributeModifier(id("hearty"), 2, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "hard", new Modifier.ModifierDefinition(items, 30, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("hard"),
-          Attributes.ARMOR, LevelBasedValue.constant(1), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ARMOR, new AttributeModifier(id("hard"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "guarding", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("guarding"),
-          Attributes.ARMOR, LevelBasedValue.constant(1.5f), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ARMOR, new AttributeModifier(id("guarding"), 1.5, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "armored", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("armored"),
-          Attributes.ARMOR, LevelBasedValue.constant(2), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ARMOR, new AttributeModifier(id("armored"), 2, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "warding", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("warding"),
-          Attributes.ARMOR_TOUGHNESS, LevelBasedValue.constant(1), AttributeModifier.Operation.ADD_VALUE)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id("warding"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "jagged", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("jagged"),
-          Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.01f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("jagged"), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "spiked", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("spiked"),
-          Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.02f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("spiked"), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "angry", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("angry"),
-          Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.03f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("angry"), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "menacing", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("menacing"),
-          Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.04f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("menacing"), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "brisk", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("brisk"),
-          Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.01f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("brisk"), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "fleeting", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("fleeting"),
-          Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.02f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("fleeting"), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "hasty", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("hasty"),
-          Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.03f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("hasty"), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "quick", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("quick"),
-          Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.04f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("quick"), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "wild", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("wild"),
-          Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.01f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("wild"), 0.01, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "rash", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("rash"),
-          Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.02f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("rash"), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "intrepid", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("intrepid"),
-          Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.03f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("intrepid"), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
 
     register(bootstrap, "violent", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.ARMOR)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(new EnchantmentAttributeEffect(id("violent"),
-          Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.04f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("violent"), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR).build()).build());
   }
 
   private static void registerToolWeaponModifiers(BootstrapContext<Modifier> bootstrap, HolderSet<Item> items) {
     register(bootstrap, "legendary", new Modifier.ModifierDefinition(items, 3, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("legendary"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("legendary"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("legendary"),
-            Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.05f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("legendary"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("legendary"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("legendary"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "deadly", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("deadly"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("deadly"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "vicious", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("vicious"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("vicious"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "sharp", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("sharp"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.05f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("sharp"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "broken", new Modifier.ModifierDefinition(items, 7, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("broken"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(-0.2f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("broken"), -0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "damaged", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("damaged"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(-0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("damaged"), -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "agile", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("agile"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.05f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("agile"),
-            Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("agile"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("agile"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "swift", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("swift"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("swift"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "sluggish", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("sluggish"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(-0.05f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("sluggish"),
-            Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(-0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("sluggish"), -0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("sluggish"), -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "slow", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("slow"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(-0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("slow"), -0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "light", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("light"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(-0.1f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("light"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("light"), -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("light"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
     register(bootstrap, "heavy", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
-      DataComponentMap.builder()
-        .set(EnchantmentEffectComponents.ATTRIBUTES, List.of(
-          new EnchantmentAttributeEffect(id("heavy"),
-            Attributes.ATTACK_DAMAGE, LevelBasedValue.constant(0.2f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("heavy"),
-            Attributes.ATTACK_SPEED, LevelBasedValue.constant(-0.15f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
-          new EnchantmentAttributeEffect(id("heavy"),
-            Attributes.MOVEMENT_SPEED, LevelBasedValue.constant(-0.05f), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-        ))
-        .build());
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("heavy"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("heavy"), -0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("heavy"), -0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
   }
 
   private static void register(BootstrapContext<Modifier> bootstrap, String name, Modifier.ModifierDefinition def, DataComponentMap effects) {

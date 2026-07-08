@@ -39,7 +39,7 @@ public final class Modifier {
     ComponentSerialization.CODEC.fieldOf("name").forGetter(Modifier::name),
     ComponentSerialization.CODEC.optionalFieldOf("description").forGetter(Modifier::description),
     ModifierDefinition.CODEC.fieldOf("definition").forGetter(Modifier::definition),
-    EnchantmentEffectComponents.CODEC.optionalFieldOf("effects", DataComponentMap.EMPTY).forGetter(Modifier::effects)
+    DataComponentMap.CODEC.optionalFieldOf("effects", DataComponentMap.EMPTY).forGetter(Modifier::effects)
   ).apply(instance, Modifier::new));
 
   public static final Codec<Holder<Modifier>> CODEC =
