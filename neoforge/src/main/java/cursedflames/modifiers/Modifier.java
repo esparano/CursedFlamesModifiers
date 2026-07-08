@@ -53,9 +53,6 @@ public final class Modifier {
             holder -> holder
           )
     );
-//  public static final Codec<Holder<Modifier>> CODEC = RegistryFileCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY, Modifier.DIRECT_CODEC);
-//  public static final Codec<Holder<Modifier>> CODEC = RegistryFixedCodec.create(ModifiersMod.MODIFIER_REGISTRY_KEY);
-
 
   private final Component name;
   private final Optional<Component> description;

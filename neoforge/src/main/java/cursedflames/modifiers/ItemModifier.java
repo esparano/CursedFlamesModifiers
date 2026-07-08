@@ -16,28 +16,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public record ItemModifier(Optional<Holder<Modifier>> modifier, boolean showInTooltip) implements TooltipProvider {
-//  public static final Codec<ItemModifier> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-//    Modifier.CODEC.optionalFieldOf("modifier").forGetter(ItemModifier::modifier),
-//    Codec.BOOL.optionalFieldOf("showInTooltip", true).forGetter(ItemModifier::showInTooltip)
-//  ).apply(instance, ItemModifier::new));
-
-//  public static final Codec<ItemModifier> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(instance -> instance.group(
-//    // 1. Lazy init makes this safe to define at startup
-//    // 2. optionalFieldOf makes this safe to save/load in JSON
-//    Modifier.CODEC.optionalFieldOf("modifier").forGetter(ItemModifier::modifier),
-//    Codec.BOOL.optionalFieldOf("showInTooltip", true).forGetter(ItemModifier::showInTooltip)
-//  ).apply(instance, ItemModifier::new)));
-
-//  public static final Codec<ItemModifier> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(instance -> instance.group(
-//    // Pass the registry key directly to create a more resilient codec
-//    ExtraCodecs.holderByName(ModifiersMod.MODIFIER_REGISTRY_KEY, Modifier.DIRECT_CODEC)
-//      .optionalFieldOf("modifier")
-//      .forGetter(ItemModifier::modifier),
-//    Codec.BOOL.optionalFieldOf("showInTooltip", true)
-//      .forGetter(ItemModifier::showInTooltip)
-//  ).apply(instance, ItemModifier::new)));
-
-  // Keep this for JSON/NBT logic, but make it lazy
   public static final Codec<ItemModifier> CODEC = Codec.lazyInitialized(() -> RecordCodecBuilder.create(instance -> instance.group(
     Modifier.CODEC.optionalFieldOf("modifier").forGetter(ItemModifier::modifier),
     Codec.BOOL.optionalFieldOf("showInTooltip", true).forGetter(ItemModifier::showInTooltip)
