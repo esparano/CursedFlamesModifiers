@@ -4,12 +4,15 @@ import cursedflames.modifiers.ItemModifier;
 import cursedflames.modifiers.Modifier;
 import cursedflames.modifiers.ModifierHandler;
 import cursedflames.modifiers.ModifiersMod;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,27 +39,13 @@ public abstract class MixinLivingEntity extends Entity {
                                          int j,
                                          EquipmentSlot equipmentSlot,
                                          ItemStack from,
-                                         ItemStack to) { // Locals updated to match 1.21.1 method signature
-
+                                         ItemStack to) {
     // Only roll if the item has no modifier and is a valid target
     if (!to.isEmpty() && !to.has(ModifiersMod.ITEM_MODIFIER_COMPONENT)) {
       var rolled = ModifierHandler.rollModifier(to, this.level());
       if (rolled.isPresent()) {
-        Modifier modifier = rolled.get().value();
-
-        // 1. Set the custom modifier component for your UI/Logic
-        to.set(ModifiersMod.ITEM_MODIFIER_COMPONENT, new ItemModifier(rolled, true));
-
-        // 2. Set built in attributes to actually affect the item's stats
-        for (TypedDataComponent<?> component : modifier.effects()) {
-          modifiers$applyComponent(to, (TypedDataComponent) component);
-        }
+        ModifierHandler.setModifier(to, new ItemModifier(rolled, true));
       }
     }
-  }
-
-  @Unique
-  private <T> void modifiers$applyComponent(ItemStack stack, TypedDataComponent<T> component) {
-    stack.set(component.type(), component.value());
   }
 }
