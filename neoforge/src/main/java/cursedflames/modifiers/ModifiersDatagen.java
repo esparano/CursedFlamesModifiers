@@ -81,9 +81,13 @@ public class ModifiersDatagen {
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
                                                                            .add(Attributes.ARMOR, new AttributeModifier(id("armored"), 2, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
 
-    register(bootstrap, "warding", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
+    register(bootstrap, "sentinel", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                                                                           .add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id("warding"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR).build()).build());
+                                                                           .add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id("sentinel"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR)
+                                                                           .add(Attributes.SCALE, new AttributeModifier(id("sentinel"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
+                                                                           .add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id("sentinel"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
+                                                                           .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, new AttributeModifier(id("sentinel"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
+                                                                           .build()).build());
 
     register(bootstrap, "jagged", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
@@ -137,7 +141,7 @@ public class ModifiersDatagen {
   private static void registerToolWeaponModifiers(BootstrapContext<Modifier> bootstrap, HolderSet<Item> items) {
     register(bootstrap, "legendary", new Modifier.ModifierDefinition(items, 3, 0, List.of(EquipmentSlotGroup.MAINHAND)),
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("legendary"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("legendary"), 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                                                                            .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("legendary"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                                                                            .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("legendary"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
@@ -184,11 +188,17 @@ public class ModifiersDatagen {
                                                                            .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("light"), -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                                                                            .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("light"), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
 
-    register(bootstrap, "heavy", new Modifier.ModifierDefinition(items, 10, 0, List.of(EquipmentSlotGroup.MAINHAND)),
+    register(bootstrap, "heavy", new Modifier.ModifierDefinition(items, 7, 0, List.of(EquipmentSlotGroup.MAINHAND)),
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
-                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("heavy"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("heavy"), 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                                                                            .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("heavy"), -0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
                                                                            .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("heavy"), -0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
+
+    register(bootstrap, "rapid", new Modifier.ModifierDefinition(items, 7, 0, List.of(EquipmentSlotGroup.MAINHAND)),
+      DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
+                                                                           .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(id("rapid"), -0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.ATTACK_SPEED, new AttributeModifier(id("rapid"), 0.25, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND)
+                                                                           .add(Attributes.MOVEMENT_SPEED, new AttributeModifier(id("rapid"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND).build()).build());
   }
 
   private static void register(BootstrapContext<Modifier> bootstrap, String name, Modifier.ModifierDefinition def, DataComponentMap effects) {

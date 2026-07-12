@@ -12,22 +12,22 @@
       "modifiers": [
         {
           "type": "minecraft:generic.attack_damage",
-          "amount": 0.3,
-          "id": "modifiers:heavy",
+          "amount": -0.2,
+          "id": "modifiers:rapid",
           "operation": "add_multiplied_total",
           "slot": "mainhand"
         },
         {
           "type": "minecraft:generic.attack_speed",
-          "amount": -0.15,
-          "id": "modifiers:heavy",
+          "amount": 0.25,
+          "id": "modifiers:rapid",
           "operation": "add_multiplied_total",
           "slot": "mainhand"
         },
         {
           "type": "minecraft:generic.movement_speed",
-          "amount": -0.05,
-          "id": "modifiers:heavy",
+          "amount": 0.05,
+          "id": "modifiers:rapid",
           "operation": "add_multiplied_total",
           "slot": "mainhand"
         }
@@ -35,6 +35,6 @@
     }
   },
   "name": {
-    "translate": "modifier.modifiers.heavy"
+    "translate": "modifier.modifiers.rapid"
   }
 }

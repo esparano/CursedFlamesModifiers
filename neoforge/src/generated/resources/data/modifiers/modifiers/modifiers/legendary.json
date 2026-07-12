@@ -12,7 +12,7 @@
       "modifiers": [
         {
           "type": "minecraft:generic.attack_damage",
-          "amount": 0.15,
+          "amount": 0.1,
           "id": "modifiers:legendary",
           "operation": "add_multiplied_total",
           "slot": "mainhand"
