@@ -84,7 +84,7 @@ public class ModifiersDatagen {
     register(bootstrap, "sentinel", new Modifier.ModifierDefinition(items, 20, 0, List.of(EquipmentSlotGroup.ARMOR)),
       DataComponentMap.builder().set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.builder()
                                                                            .add(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id("sentinel"), 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.ARMOR)
-                                                                           .add(Attributes.SCALE, new AttributeModifier(id("sentinel"), 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
+                                                                           .add(Attributes.SCALE, new AttributeModifier(id("sentinel"), 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
                                                                            .add(Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id("sentinel"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
                                                                            .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, new AttributeModifier(id("sentinel"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.ARMOR)
                                                                            .build()).build());

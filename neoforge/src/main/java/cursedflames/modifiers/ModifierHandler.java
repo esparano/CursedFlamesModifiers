@@ -4,13 +4,15 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.TypedDataComponent;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
-import org.checkerframework.common.returnsreceiver.qual.This;
-import org.spongepowered.asm.mixin.Unique;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class ModifierHandler {
@@ -57,11 +59,30 @@ public class ModifierHandler {
       builder.add(entry.attribute(), entry.modifier(), entry.slot());
     }
 
+    EquipmentSlot realEquipmentSlot = null;
+    if (itemStack.getItem() instanceof ArmorItem) {
+      realEquipmentSlot = ((ArmorItem) itemStack.getItem()).getType().getSlot();
+    }
+
     for (TypedDataComponent<?> component : itemModifier.modifier().get().value().effects()) {
       if (component.type() == DataComponents.ATTRIBUTE_MODIFIERS) {
         ItemAttributeModifiers newMods = (ItemAttributeModifiers) component.value();
         for (ItemAttributeModifiers.Entry entry : newMods.modifiers()) {
-          builder.add(entry.attribute(), entry.modifier(), entry.slot());
+          String uniqueId = entry.modifier().id().getPath();
+          // Generate a unique ID per slot to ensure that modifiers from multiple armor pieces stack
+          if (realEquipmentSlot != null) {
+            uniqueId += "." + realEquipmentSlot.toString().toLowerCase();
+          }
+          // Use the builder to add the modifier with the new, unique ID
+          builder.add(
+            entry.attribute(),
+            new AttributeModifier(
+              ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, uniqueId),
+              entry.modifier().amount(),
+              entry.modifier().operation()
+            ),
+            entry.slot()
+          );
         }
       }
       // This probably isn't needed... The modifier's "effects" should always be attribute modifiers
@@ -73,7 +94,7 @@ public class ModifierHandler {
     // 5. Apply the final, merged set
     itemStack.set(DataComponents.ATTRIBUTE_MODIFIERS, builder.build());
   }
-  
+
   @SuppressWarnings("resource")
   public static Optional<Holder<Modifier>> rollModifier(ItemStack itemStack, Level level) {
     RegistryAccess registryAccess = level.registryAccess();
@@ -90,5 +111,6 @@ public class ModifierHandler {
 
     return Optional.ofNullable(pool.roll(level.getRandom()));
   }
-}
 
+
+}

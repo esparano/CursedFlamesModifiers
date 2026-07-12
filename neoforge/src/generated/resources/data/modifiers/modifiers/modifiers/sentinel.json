@@ -19,7 +19,7 @@
         },
         {
           "type": "minecraft:generic.scale",
-          "amount": 0.025,
+          "amount": 0.04,
           "id": "modifiers:sentinel",
           "operation": "add_multiplied_total",
           "slot": "armor"
