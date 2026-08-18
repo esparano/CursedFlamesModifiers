@@ -24,22 +24,22 @@ public class ModEventHandler {
       // --- ONE-TIME LEGACY MIGRATION ---
       // If the item has the old hardcoded "minecraft:attribute_modifiers" containing our mod's identifiers,
       // strip out all minecraft:attribute_modifiers so that the new dynamic event system can take over permanently.
-      if (stack.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
-        var attrComponent = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
-        if (attrComponent != null) {
-          boolean hasOurOldModifiers = attrComponent.modifiers().stream()
-                                         .anyMatch(entry -> entry.modifier().id().getNamespace().equals(Constants.MOD_ID));
-          if (hasOurOldModifiers) {
-            // "remove" left a weird modifier like "!minecraft:attribute_modifiers:{}"
-            ItemAttributeModifiers defaultModifiers = stack.getItem().getDefaultAttributeModifiers();
-
-            // How NeoForge Handles Syncing: When you set an ItemStack's data component to match its underlying item
-            // type's default value exactly, the game's serialization logic realizes the data is identical to the
-            // base prototype.
-            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, defaultModifiers);
-          }
-        }
-      }
+//      if (stack.has(DataComponents.ATTRIBUTE_MODIFIERS)) {
+//        var attrComponent = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
+//        if (attrComponent != null) {
+//          boolean hasOurOldModifiers = attrComponent.modifiers().stream()
+//                                         .anyMatch(entry -> entry.modifier().id().getNamespace().equals(Constants.MOD_ID));
+//          if (hasOurOldModifiers) {
+//            // "remove" left a weird modifier like "!minecraft:attribute_modifiers:{}"
+//            //          ItemAttributeModifiers defaultModifiers = stack.getItem().getDefaultAttributeModifiers(stack);
+//
+//            // How NeoForge Handles Syncing: When you set an ItemStack's data component to match its underlying item
+//            // type's default value exactly, the game's serialization logic realizes the data is identical to the
+//            // base prototype.
+//            stack.remove(DataComponents.ATTRIBUTE_MODIFIERS);
+//          }
+//        }
+//      }
       // ---------------------------------
 
       var itemModifier = stack.get(ModifiersMod.ITEM_MODIFIER_COMPONENT);
