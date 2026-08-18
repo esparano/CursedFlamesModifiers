@@ -31,7 +31,12 @@ public class ModEventHandler {
                                          .anyMatch(entry -> entry.modifier().id().getNamespace().equals(Constants.MOD_ID));
           if (hasOurOldModifiers) {
             // "remove" left a weird modifier like "!minecraft:attribute_modifiers:{}"
-            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY);
+            ItemAttributeModifiers defaultModifiers = stack.getItem().getDefaultAttributeModifiers();
+
+            // How NeoForge Handles Syncing: When you set an ItemStack's data component to match its underlying item
+            // type's default value exactly, the game's serialization logic realizes the data is identical to the
+            // base prototype.
+            stack.set(DataComponents.ATTRIBUTE_MODIFIERS, defaultModifiers);
           }
         }
       }
